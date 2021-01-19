@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +47,16 @@ public class ProductController {
 		return products.stream()
 				.map(product -> dtoConverter.convert(product, ProductDto.class))
 				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * API to get a product by product id
+	 * @return
+	 */
+	@GetMapping("{productId}")
+	@ApiOperation(value = "API to find all products")
+	public ProductDto getProductById(@PathVariable Long productId) {
+		return dtoConverter.convert(productService.getProductById(productId), ProductDto.class);
 	}
 
 }
