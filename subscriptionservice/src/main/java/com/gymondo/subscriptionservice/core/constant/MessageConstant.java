@@ -7,6 +7,7 @@ public class MessageConstant {
 
 	// Error messages
 	public static final String SUBSCRIPTION_NOT_FOUND = "subscription.not.found";
-	public static final String PRODUCT_NOT_FOUND = "product.not.found";;
+	public static final String PRODUCT_NOT_FOUND = "product.not.found";
+	public static final String USER_ALREADY_EXIST = "user.already.exist";
 
 }

@@ -7,9 +7,10 @@ public class SubscriptionPlanDto {
 	private Long id;
 	private double pricePerMonth;
 	private SubscriptionType subscriptionType;
-	private double totalPrice;
-	private double discountedPrice;
-	
+	private double priceBeforeDiscount;
+	private double discountAmount;
+	private double priceAfterDiscount;
+
 	public SubscriptionPlanDto() {}
 
 	public Long getId() {
@@ -36,21 +37,43 @@ public class SubscriptionPlanDto {
 		this.subscriptionType = subscriptionType;
 	}
 
-	public double getTotalPrice() {
-		return totalPrice;
+	public double getPriceBeforeDiscount() {
+		switch(this.subscriptionType) {
+		case MONTHLY:
+			priceBeforeDiscount = pricePerMonth;
+			break;
+		case QUARTERLY:
+			priceBeforeDiscount = pricePerMonth*3;
+			break;
+		case HALF_YEARLY:
+			priceBeforeDiscount = pricePerMonth*6;
+			break;
+		case YEARLY:
+			priceBeforeDiscount = pricePerMonth*12;
+			break;
+		}
+		return priceBeforeDiscount;
 	}
 
-	public void setTotalPrice(double totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setPriceBeforeDiscount(double priceBeforeDiscount) {
+		this.priceBeforeDiscount = priceBeforeDiscount;
 	}
 
-	public double getDiscountedPrice() {
-		return discountedPrice;
+	public double getDiscountAmount() {
+		return discountAmount;
 	}
 
-	public void setDiscountedPrice(double discountedPrice) {
-		this.discountedPrice = discountedPrice;
+	public void setDiscountAmount(double discountAmount) {
+		this.discountAmount = discountAmount;
 	}
-	
-	
+
+	public double getPriceAfterDiscount() {
+		priceAfterDiscount = priceBeforeDiscount - discountAmount;
+		return priceAfterDiscount;
+	}
+
+	public void setPriceAfterDiscount(double priceAfterDiscount) {
+		this.priceAfterDiscount = priceAfterDiscount;
+	}
+
 }

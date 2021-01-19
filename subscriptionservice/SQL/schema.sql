@@ -1,5 +1,5 @@
 CREATE TYPE subscription_status AS ENUM ('ACTIVE','CANCEL','PAUSE');
-CREATE TYPE subscription_type AS ENUM ('MONTHLY','QUARTERLY','YEARLY');
+CREATE TYPE subscription_type AS ENUM ('MONTHLY','QUARTERLY','HALF_YEARLY','YEARLY');
 
 create table users(
 	id bigserial PRIMARY KEY,

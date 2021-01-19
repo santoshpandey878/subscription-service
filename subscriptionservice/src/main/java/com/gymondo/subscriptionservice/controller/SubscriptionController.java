@@ -24,13 +24,13 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("products")
 @Api(value = "Product Controller responsible to handle client requests to list product details.")
-public class ProductController {
+public class SubscriptionController {
 
 	private final ProductService productService;
 	private final DtoConverter dtoConverter;
 
 	@Autowired
-	public ProductController(ProductService productService,
+	public SubscriptionController(ProductService productService,
 			DtoConverter dtoConverter) {
 		this.productService = productService;
 		this.dtoConverter = dtoConverter;
@@ -54,7 +54,7 @@ public class ProductController {
 	 * @return
 	 */
 	@GetMapping("{productId}")
-	@ApiOperation(value = "API to get a product by product id")
+	@ApiOperation(value = "API to find all products")
 	public ProductDto getProductById(@PathVariable Long productId) {
 		return dtoConverter.convert(productService.getProductById(productId), ProductDto.class);
 	}

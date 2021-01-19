@@ -2,6 +2,7 @@ package com.gymondo.subscriptionservice.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gymondo.subscriptionservice.core.constant.MessageConstant;
@@ -17,6 +18,7 @@ public class ProductServiceImpl implements ProductService {
 	private final ProductRepository productRepository;
 	private final MessageUtil message;
 	
+	@Autowired
 	public ProductServiceImpl(ProductRepository productRepository,
 			MessageUtil message) {
 		this.productRepository = productRepository;

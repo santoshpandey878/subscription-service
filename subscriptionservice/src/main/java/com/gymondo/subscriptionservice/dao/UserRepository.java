@@ -7,4 +7,10 @@ import com.gymondo.subscriptionservice.entity.User;
  */
 public interface UserRepository extends BaseRepository<User, Long>{
 
+	/**
+	 * Method to get user by email
+	 * @param email
+	 * @return
+	 */
+	User findByEmail(String email);
 }

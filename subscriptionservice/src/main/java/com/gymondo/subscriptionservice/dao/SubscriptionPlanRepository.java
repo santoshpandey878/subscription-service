@@ -7,5 +7,12 @@ import com.gymondo.subscriptionservice.entity.SubscriptionPlan;
  */
 public interface SubscriptionPlanRepository extends BaseRepository<SubscriptionPlan, Long>{
 
+	/**
+	 * Method to get subscription plan by product id
+	 * @param productId
+	 * @return
+	 */
+	SubscriptionPlan findByProduct_Id(Long productId);
+
 
 }
