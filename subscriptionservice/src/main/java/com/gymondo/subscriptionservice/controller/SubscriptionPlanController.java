@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
  * DTO is used to interact with client.
  */
 @RestController
-@RequestMapping("subscriptionplan")
+@RequestMapping("subscriptionplans")
 @Api(value = "SubscriptionPlan Controller responsible to handle client requests to get the subscription plan for a product.")
 public class SubscriptionPlanController {
 

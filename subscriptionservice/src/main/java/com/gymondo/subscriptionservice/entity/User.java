@@ -18,26 +18,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "users")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id", nullable = false, updatable = false)
 	private Long id;
-
-	@Column(name = "first_name", length = 50, nullable = false)
 	private String firstName;
-
-	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
-
-	@Column(name="email", nullable = false, updatable = false)
 	private String email;
-
-	@Column(name = "active", length = 1, nullable = false)
 	private boolean active;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Subscription> subscriptions;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id", nullable = false, updatable = false)
 	public Long getId() {
 		return id;
 	}
@@ -46,6 +36,7 @@ public class User {
 		this.id = id;
 	}
 
+	@Column(name = "first_name", length = 50, nullable = false)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -54,6 +45,7 @@ public class User {
 		this.firstName = firstName;
 	}
 
+	@Column(name = "last_name", length = 50, nullable = false)
 	public String getLastName() {
 		return lastName;
 	}
@@ -62,6 +54,7 @@ public class User {
 		this.lastName = lastName;
 	}
 
+	@Column(name="email", nullable = false, updatable = false)
 	public String getEmail() {
 		return email;
 	}
@@ -70,6 +63,7 @@ public class User {
 		this.email = email;
 	}
 
+	@Column(name = "active", length = 1, nullable = false)
 	public boolean isActive() {
 		return active;
 	}
@@ -79,6 +73,7 @@ public class User {
 	}
 
 	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	public List<Subscription> getSubscriptions() {
 		return subscriptions;
 	}

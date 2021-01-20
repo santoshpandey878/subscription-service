@@ -13,22 +13,15 @@ import javax.persistence.Table;
 @Table(name = "product")
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id", nullable = false, updatable = false)
 	private Long id;
-
-	@Column(name = "name", length = 255, nullable = false)
 	private String name;
 	private String description;
-
-	@Column(name = "active", length = 1, nullable = false)
 	private boolean active;
-
-	@OneToOne
-	@JoinColumn(name = "subscription_plan_id")
 	private SubscriptionPlan subscriptionPlan;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id", nullable = false, updatable = false)
 	public Long getId() {
 		return id;
 	}
@@ -37,6 +30,7 @@ public class Product {
 		this.id = id;
 	}
 
+	@Column(name = "name", length = 255, nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -53,6 +47,7 @@ public class Product {
 		this.description = description;
 	}
 
+	@Column(name = "active", length = 1, nullable = false)
 	public boolean isActive() {
 		return active;
 	}
@@ -61,6 +56,8 @@ public class Product {
 		this.active = active;
 	}
 
+	@OneToOne
+	@JoinColumn(name = "subscription_plan_id")
 	public SubscriptionPlan getSubscriptionPlan() {
 		return subscriptionPlan;
 	}

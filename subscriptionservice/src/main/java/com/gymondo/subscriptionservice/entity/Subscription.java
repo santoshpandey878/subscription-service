@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,44 +15,33 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import com.gymondo.subscriptionservice.core.constant.SubscriptionStatus;
+import com.gymondo.subscriptionservice.core.constant.SubscriptionType;
 import com.gymondo.subscriptionservice.core.utils.DateUtilities;
+import com.gymondo.subscriptionservice.core.utils.PostgreSQLEnumType;
 
 @Entity
 @Table(name = "subscription")
+@TypeDef(name = "enumType",typeClass = PostgreSQLEnumType.class)
 public class Subscription {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	@Column(name = "start_date", nullable = false)
 	private LocalDateTime startDate;
-
-	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
 	private String duration;
-
-	@Column(name = "subscription_status")
+	private SubscriptionType subscriptionType;
 	private SubscriptionStatus subscriptionStatus;
-
-	@Column(name = "price_before_discount", nullable = false)
 	private double priceBeforeDiscount;
-	
-	@Column(name = "discount_amount")
 	private double discountAmount;
-	
-	@Column(name = "price_after_discount")
 	private double priceAfterDiscount;
-
-	@ManyToOne
-	@JoinColumn(name="subscription_plan_id")
 	private SubscriptionPlan subscriptionPlan;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
 	private User user;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +50,7 @@ public class Subscription {
 		this.id = id;
 	}
 
+	@Column(name = "start_date", nullable = false)
 	public LocalDateTime getStartDate() {
 		return startDate;
 	}
@@ -67,6 +59,7 @@ public class Subscription {
 		this.startDate = startDate;
 	}
 
+	@Column(name = "end_date", nullable = false)
 	public LocalDateTime getEndDate() {
 		return endDate;
 	}
@@ -75,6 +68,9 @@ public class Subscription {
 		this.endDate = endDate;
 	}
 
+	@Enumerated(EnumType.STRING)
+	@Type(type = "enumType")
+	@Column(name = "subscription_status")
 	public SubscriptionStatus getSubscriptionStatus() {
 		return subscriptionStatus;
 	}
@@ -83,6 +79,7 @@ public class Subscription {
 		this.subscriptionStatus = subscriptionStatus;
 	}
 
+	@Column(name = "price_before_discount", nullable = false)
 	public double getPriceBeforeDiscount() {
 		return priceBeforeDiscount;
 	}
@@ -91,6 +88,7 @@ public class Subscription {
 		this.priceBeforeDiscount = priceBeforeDiscount;
 	}
 
+	@Column(name = "discount_amount")
 	public double getDiscountAmount() {
 		return discountAmount;
 	}
@@ -99,6 +97,7 @@ public class Subscription {
 		this.discountAmount = discountAmount;
 	}
 
+	@Column(name = "price_after_discount")
 	public double getPriceAfterDiscount() {
 		return priceAfterDiscount;
 	}
@@ -107,6 +106,8 @@ public class Subscription {
 		this.priceAfterDiscount = priceAfterDiscount;
 	}
 
+	@ManyToOne
+	@JoinColumn(name="subscription_plan_id")
 	public SubscriptionPlan getSubscriptionPlan() {
 		return subscriptionPlan;
 	}
@@ -115,6 +116,8 @@ public class Subscription {
 		this.subscriptionPlan = subscriptionPlan;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")
 	public User getUser() {
 		return user;
 	}
@@ -122,7 +125,7 @@ public class Subscription {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	@Transient
 	public String getDuration() {
 		LocalDateTime endTime = null != endDate ? endDate : LocalDateTime.now(); 
@@ -132,6 +135,17 @@ public class Subscription {
 
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+
+	@Enumerated(EnumType.STRING)
+	@Type(type = "enumType")
+	@Column(name = "subscription_type")
+	public SubscriptionType getSubscriptionType() {
+		return subscriptionType;
+	}
+
+	public void setSubscriptionType(SubscriptionType subscriptionType) {
+		this.subscriptionType = subscriptionType;
 	}
 
 }
