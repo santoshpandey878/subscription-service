@@ -7,9 +7,10 @@ public class SubscriptionPlanDto {
 	private Long id;
 	private double pricePerMonth;
 	private SubscriptionType subscriptionType;
-	private double priceBeforeDiscount;
+	private double basePrice;
 	private double discountAmount;
-	private double priceAfterDiscount;
+	private double taxAmount;
+	private double totalPrice;
 
 	public SubscriptionPlanDto() {}
 
@@ -37,28 +38,6 @@ public class SubscriptionPlanDto {
 		this.subscriptionType = subscriptionType;
 	}
 
-	public double getPriceBeforeDiscount() {
-		switch(this.subscriptionType) {
-		case MONTHLY:
-			priceBeforeDiscount = pricePerMonth;
-			break;
-		case QUARTERLY:
-			priceBeforeDiscount = pricePerMonth*3;
-			break;
-		case HALF_YEARLY:
-			priceBeforeDiscount = pricePerMonth*6;
-			break;
-		case YEARLY:
-			priceBeforeDiscount = pricePerMonth*12;
-			break;
-		}
-		return priceBeforeDiscount;
-	}
-
-	public void setPriceBeforeDiscount(double priceBeforeDiscount) {
-		this.priceBeforeDiscount = priceBeforeDiscount;
-	}
-
 	public double getDiscountAmount() {
 		return discountAmount;
 	}
@@ -67,13 +46,43 @@ public class SubscriptionPlanDto {
 		this.discountAmount = discountAmount;
 	}
 
-	public double getPriceAfterDiscount() {
-		priceAfterDiscount = priceBeforeDiscount - discountAmount;
-		return priceAfterDiscount;
+	public double getBasePrice() {
+		switch(this.subscriptionType) {
+		case MONTHLY:
+			basePrice = pricePerMonth;
+			break;
+		case QUARTERLY:
+			basePrice = pricePerMonth*3;
+			break;
+		case HALF_YEARLY:
+			basePrice = pricePerMonth*6;
+			break;
+		case YEARLY:
+			basePrice = pricePerMonth*12;
+			break;
+		}
+		return basePrice;
 	}
 
-	public void setPriceAfterDiscount(double priceAfterDiscount) {
-		this.priceAfterDiscount = priceAfterDiscount;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
 	}
 
+	public double getTaxAmount() {
+		return taxAmount;
+	}
+
+	public void setTaxAmount(double taxAmount) {
+		this.taxAmount = taxAmount;
+	}
+
+	public double getTotalPrice() {
+		totalPrice = basePrice + taxAmount - discountAmount;
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	
 }

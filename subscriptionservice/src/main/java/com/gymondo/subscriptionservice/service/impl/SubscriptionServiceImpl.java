@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gymondo.subscriptionservice.core.constant.ApplicationConstant;
+import com.gymondo.subscriptionservice.core.constant.MessageConstant;
 import com.gymondo.subscriptionservice.core.constant.SubscriptionStatus;
+import com.gymondo.subscriptionservice.core.exception.ResourceNotFoundException;
+import com.gymondo.subscriptionservice.core.exception.ServiceException;
 import com.gymondo.subscriptionservice.core.utils.MessageUtil;
 import com.gymondo.subscriptionservice.dao.SubscriptionRepository;
 import com.gymondo.subscriptionservice.entity.Product;
@@ -38,6 +42,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
+	public Subscription getSubscriptionById(Long subscriptionId) {
+		return subscriptionRepository.findById(subscriptionId)
+				.orElseThrow(() -> new ResourceNotFoundException(message.get(MessageConstant.SUBSCRIPTION_NOT_FOUND, subscriptionId)));
+	}
+
+	@Override
 	public List<Subscription> getAllSubscriptionsByUser(String userEmail) {
 		return subscriptionRepository.findByUser_Email(userEmail);
 	}
@@ -57,29 +67,69 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		switch(subscription.getSubscriptionType()) {
 		case MONTHLY:
 			newSubscription.setEndDate(LocalDateTime.now().plusDays(30));
-			newSubscription.setPriceBeforeDiscount(subscriptionPlan.getPricePerMonth());
+			newSubscription.setBasePrice(subscriptionPlan.getPricePerMonth());
 			break;
 		case QUARTERLY:
 			newSubscription.setEndDate(LocalDateTime.now().plusDays(90));
-			newSubscription.setPriceBeforeDiscount(subscriptionPlan.getPricePerMonth()*3);
+			newSubscription.setBasePrice(subscriptionPlan.getPricePerMonth()*3);
 			break;
 		case HALF_YEARLY:
 			newSubscription.setEndDate(LocalDateTime.now().plusDays(180));
-			newSubscription.setPriceBeforeDiscount(subscriptionPlan.getPricePerMonth()*6);
+			newSubscription.setBasePrice(subscriptionPlan.getPricePerMonth()*6);
 			break;
 		case YEARLY:
 			newSubscription.setEndDate(LocalDateTime.now().plusDays(365));
-			newSubscription.setPriceBeforeDiscount(subscriptionPlan.getPricePerMonth()*12);
+			newSubscription.setBasePrice(subscriptionPlan.getPricePerMonth()*12);
 			break;
 		default:
 			break;
 		}
 
-		newSubscription.setPriceAfterDiscount(newSubscription.getPriceBeforeDiscount()-0);
+		double taxAmount = (newSubscription.getBasePrice()*ApplicationConstant.TAX_PERCENTAGE)/100;
+		newSubscription.setTaxAmount(taxAmount);
+		newSubscription.setTotalPrice(newSubscription.getBasePrice() + taxAmount - 0);
 		newSubscription.setSubscriptionPlan(subscriptionPlan);
 		newSubscription.setUser(user);
 
 		return subscriptionRepository.save(newSubscription);
+	}
+
+	@Transactional
+	@Override
+	public Subscription changeSubscriptionStatus(Long subscriptionId, SubscriptionStatus status) {
+		Subscription subscription = getSubscriptionById(subscriptionId);
+		validateSubscriptionStatus(subscription, status);
+		subscription.setSubscriptionStatus(status);
+		return subscriptionRepository.save(subscription);
+	}
+
+	/**
+	 * Method to validate subscription status
+	 * @param subscription
+	 * @param status
+	 */
+	private void validateSubscriptionStatus(Subscription subscription, SubscriptionStatus status) {
+		switch (status) {
+		case CANCEL:
+			if(subscription.getSubscriptionStatus() == SubscriptionStatus.CANCEL) {
+				throw new ServiceException(message.get(ApplicationConstant.SUBSCRIPTION_ALREADY_CANCELLED));
+			}
+			break;
+		case PAUSE:
+			if(subscription.getSubscriptionStatus() != SubscriptionStatus.ACTIVE) {
+				throw new ServiceException(message.get(ApplicationConstant.SUBSCRIPTION_IS_NOT_ACTIVE));
+			}
+			break;
+		case ACTIVE:
+			if(subscription.getSubscriptionStatus() == SubscriptionStatus.ACTIVE) {
+				throw new ServiceException(message.get(ApplicationConstant.SUBSCRIPTION_ALREADY_ACTIVE));
+			} else if(subscription.getSubscriptionStatus() == SubscriptionStatus.CANCEL) {
+				throw new ServiceException(message.get(ApplicationConstant.SUBSCRIPTION_CANCELLED));
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 }

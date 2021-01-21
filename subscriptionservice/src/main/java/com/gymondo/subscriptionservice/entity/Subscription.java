@@ -34,9 +34,10 @@ public class Subscription {
 	private String duration;
 	private SubscriptionType subscriptionType;
 	private SubscriptionStatus subscriptionStatus;
-	private double priceBeforeDiscount;
+	private double basePrice;
+	private double taxAmount;
 	private double discountAmount;
-	private double priceAfterDiscount;
+	private double totalPrice;
 	private SubscriptionPlan subscriptionPlan;
 	private User user;
 
@@ -79,13 +80,31 @@ public class Subscription {
 		this.subscriptionStatus = subscriptionStatus;
 	}
 
-	@Column(name = "price_before_discount", nullable = false)
-	public double getPriceBeforeDiscount() {
-		return priceBeforeDiscount;
+	@Column(name = "base_price", nullable = false)
+	public double getBasePrice() {
+		return basePrice;
 	}
 
-	public void setPriceBeforeDiscount(double priceBeforeDiscount) {
-		this.priceBeforeDiscount = priceBeforeDiscount;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
+	}
+
+	@Column(name = "tax_amount", nullable = false)
+	public double getTaxAmount() {
+		return taxAmount;
+	}
+
+	public void setTaxAmount(double taxAmount) {
+		this.taxAmount = taxAmount;
+	}
+
+	@Column(name = "total_price")
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	@Column(name = "discount_amount")
@@ -95,15 +114,6 @@ public class Subscription {
 
 	public void setDiscountAmount(double discountAmount) {
 		this.discountAmount = discountAmount;
-	}
-
-	@Column(name = "price_after_discount")
-	public double getPriceAfterDiscount() {
-		return priceAfterDiscount;
-	}
-
-	public void setPriceAfterDiscount(double priceAfterDiscount) {
-		this.priceAfterDiscount = priceAfterDiscount;
 	}
 
 	@ManyToOne

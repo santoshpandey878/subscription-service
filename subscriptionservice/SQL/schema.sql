@@ -29,9 +29,10 @@ create table subscription(
 	end_date timestamp,
 	subscription_type subscription_type,
 	subscription_status subscription_status,
-	price_before_discount decimal,
+	base_price decimal,
 	discount_amount decimal,
-	price_after_discount decimal,
+	tax_amount decimal,
+	total_price decimal,
 	subscription_plan_id bigint references subscription_plan(id),
 	user_id bigint references users(id)
 );
@@ -43,6 +44,12 @@ INSERT INTO subscription_plan(price_per_month, subscription_type) VALUES
 INSERT INTO product(name, description, active, subscription_plan_id) VALUES 
 ('PRODUCT 1', 'DESCRIPTION FOR PRODUCT 1', true, 1),
 ('PRODUCT 2', 'DESCRIPTION FOR PRODUCT 2', true, 2);
+
+alter table subscription rename column price_after_discount to total_price;
+alter table subscription rename column price_before_discount to base_price;
+alter table subscription add column tax_amount decimal;
+
+
 
 
 

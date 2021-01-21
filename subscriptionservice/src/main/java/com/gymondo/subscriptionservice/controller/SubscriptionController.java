@@ -5,12 +5,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gymondo.subscriptionservice.core.constant.SubscriptionStatus;
 import com.gymondo.subscriptionservice.core.utils.DtoConverter;
 import com.gymondo.subscriptionservice.dto.SubscriptionDto;
 import com.gymondo.subscriptionservice.entity.Subscription;
@@ -63,6 +66,19 @@ public class SubscriptionController {
 		Subscription subscription = subscriptionService.createSubscription(dtoConverter.convert(subscriptionDto, Subscription.class),
 				subscriptionDto.getProductId(), subscriptionDto.getUserEmail());
 		return dtoConverter.convert(subscription, SubscriptionDto.class);
+	}
+	
+	/**
+	 * API to pause/unpause/cancel a subscription of user
+	 * @param subscriptionId
+	 * @param status
+	 * @return
+	 */
+	@PatchMapping("{subscriptionId}/status")
+	@ApiOperation(value = "API to pause/unpause/cancel a subscription of user")
+	public SubscriptionDto changeSubscriptionStatus(@PathVariable("subscriptionId") Long subscriptionId,
+			@RequestParam("status") SubscriptionStatus status) {
+		return dtoConverter.convert(subscriptionService.changeSubscriptionStatus(subscriptionId, status), SubscriptionDto.class);
 	}
 
 }

@@ -13,9 +13,10 @@ public class SubscriptionDto {
 	private String duration;
 	private SubscriptionType subscriptionType;
 	private SubscriptionStatus subscriptionStatus;
-	private double priceBeforeDiscount;
+	private double basePrice;
 	private double discountAmount;
-	private double priceAfterDiscount;
+	private double taxAmount;
+	private double totalPrice;
 	private Long productId;
 	private String userEmail;
 
@@ -61,14 +62,6 @@ public class SubscriptionDto {
 		this.subscriptionStatus = subscriptionStatus;
 	}
 
-	public double getPriceBeforeDiscount() {
-		return priceBeforeDiscount;
-	}
-
-	public void setPriceBeforeDiscount(double priceBeforeDiscount) {
-		this.priceBeforeDiscount = priceBeforeDiscount;
-	}
-
 	public double getDiscountAmount() {
 		return discountAmount;
 	}
@@ -77,12 +70,28 @@ public class SubscriptionDto {
 		this.discountAmount = discountAmount;
 	}
 
-	public double getPriceAfterDiscount() {
-		return priceAfterDiscount;
+	public double getBasePrice() {
+		return basePrice;
 	}
 
-	public void setPriceAfterDiscount(double priceAfterDiscount) {
-		this.priceAfterDiscount = priceAfterDiscount;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
+	}
+
+	public double getTaxAmount() {
+		return taxAmount;
+	}
+
+	public void setTaxAmount(double taxAmount) {
+		this.taxAmount = taxAmount;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public Long getProductId() {
