@@ -64,10 +64,10 @@ public class SubscriptionController {
 	@ApiOperation(value = "API to create subscription for a product by user")
 	public SubscriptionDto createSubscription(@RequestBody SubscriptionDto subscriptionDto) {
 		Subscription subscription = subscriptionService.createSubscription(dtoConverter.convert(subscriptionDto, Subscription.class),
-				subscriptionDto.getProductId(), subscriptionDto.getUserEmail());
+				subscriptionDto.getProductId(), subscriptionDto.getUserEmail(), subscriptionDto.getVoucherId());
 		return dtoConverter.convert(subscription, SubscriptionDto.class);
 	}
-	
+
 	/**
 	 * API to pause/unpause/cancel a subscription of user
 	 * @param subscriptionId

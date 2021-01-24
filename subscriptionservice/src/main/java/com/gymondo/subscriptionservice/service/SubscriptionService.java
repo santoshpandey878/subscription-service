@@ -28,7 +28,7 @@ public interface SubscriptionService {
 	 * @param userEmail
 	 * @return
 	 */
-	Subscription createSubscription(Subscription subscription, Long productId, String userEmail);
+	Subscription createSubscription(Subscription subscription, Long productId, String userEmail, Long voucherId);
 
 	/**
 	 * Method to pause/unpause/cancel a subscription of user

@@ -1,14 +1,17 @@
 package com.gymondo.subscriptionservice.dto;
 
+import com.gymondo.subscriptionservice.core.constant.ApplicationConstant;
 import com.gymondo.subscriptionservice.core.constant.SubscriptionType;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description="All details about subscription plan.")
 public class SubscriptionPlanDto {
 
 	private Long id;
 	private double pricePerMonth;
 	private SubscriptionType subscriptionType;
 	private double basePrice;
-	private double discountAmount;
 	private double taxAmount;
 	private double totalPrice;
 
@@ -38,14 +41,6 @@ public class SubscriptionPlanDto {
 		this.subscriptionType = subscriptionType;
 	}
 
-	public double getDiscountAmount() {
-		return discountAmount;
-	}
-
-	public void setDiscountAmount(double discountAmount) {
-		this.discountAmount = discountAmount;
-	}
-
 	public double getBasePrice() {
 		switch(this.subscriptionType) {
 		case MONTHLY:
@@ -69,6 +64,7 @@ public class SubscriptionPlanDto {
 	}
 
 	public double getTaxAmount() {
+		taxAmount = (basePrice*ApplicationConstant.TAX_PERCENTAGE)/100;
 		return taxAmount;
 	}
 
@@ -77,12 +73,12 @@ public class SubscriptionPlanDto {
 	}
 
 	public double getTotalPrice() {
-		totalPrice = basePrice + taxAmount - discountAmount;
+		totalPrice = basePrice + taxAmount;
 		return totalPrice;
 	}
 
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
 }

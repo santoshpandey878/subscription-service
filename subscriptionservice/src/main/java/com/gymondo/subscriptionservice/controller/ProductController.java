@@ -48,15 +48,30 @@ public class ProductController {
 				.map(product -> dtoConverter.convert(product, ProductDto.class))
 				.collect(Collectors.toList());
 	}
-	
+
 	/**
 	 * API to get a product by product id
+	 * @param productId
 	 * @return
 	 */
 	@GetMapping("{productId}")
 	@ApiOperation(value = "API to get a product by product id")
 	public ProductDto getProductById(@PathVariable Long productId) {
 		return dtoConverter.convert(productService.getProductById(productId), ProductDto.class);
+	}
+
+	/**
+	 * API to get all products for a voucher
+	 * @param voucherId
+	 * @return
+	 */
+	@GetMapping("vouchers/{voucherId}")
+	@ApiOperation(value = "API to get all products for a voucher")
+	public List<ProductDto> getAllProductsByVoucherId(@PathVariable Long voucherId) {
+		List<Product> products = productService.getAllProductsByVoucherId(voucherId);
+		return products.stream()
+				.map(product -> dtoConverter.convert(product, ProductDto.class))
+				.collect(Collectors.toList());
 	}
 
 }

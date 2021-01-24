@@ -21,6 +21,7 @@ import org.hibernate.annotations.TypeDef;
 import com.gymondo.subscriptionservice.core.constant.SubscriptionStatus;
 import com.gymondo.subscriptionservice.core.constant.SubscriptionType;
 import com.gymondo.subscriptionservice.core.utils.DateUtilities;
+import com.gymondo.subscriptionservice.core.utils.NullUtil;
 import com.gymondo.subscriptionservice.core.utils.PostgreSQLEnumType;
 
 @Entity
@@ -40,6 +41,10 @@ public class Subscription {
 	private double totalPrice;
 	private SubscriptionPlan subscriptionPlan;
 	private User user;
+	private Product product;
+	private boolean trialActive;
+	private LocalDateTime trialStartDate;
+	private LocalDateTime trialEndDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,7 +144,7 @@ public class Subscription {
 	@Transient
 	public String getDuration() {
 		LocalDateTime endTime = null != endDate ? endDate : LocalDateTime.now(); 
-		duration = DateUtilities.subtractDate(endTime, startDate);
+		duration = DateUtilities.getDuration(endTime, startDate);
 		return duration;
 	}
 
@@ -158,4 +163,48 @@ public class Subscription {
 		this.subscriptionType = subscriptionType;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="product_id")
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	@Transient
+	public boolean isTrialActive() {
+		if(NullUtil.isNotNull(trialStartDate) 
+				&& NullUtil.isNotNull(trialEndDate) 
+				&& LocalDateTime.now().isBefore(trialEndDate)) {
+			trialActive = true;
+		} else {
+			trialActive = false;
+		}
+		return trialActive;
+	}
+
+	public void setTrialActive(boolean trialActive) {
+		this.trialActive = trialActive;
+	}
+
+	@Column(name = "trial_start_date", nullable = false)
+	public LocalDateTime getTrialStartDate() {
+		return trialStartDate;
+	}
+
+	public void setTrialStartDate(LocalDateTime trialStartDate) {
+		this.trialStartDate = trialStartDate;
+	}
+
+	@Column(name = "trial_end_date", nullable = false)
+	public LocalDateTime getTrialEndDate() {
+		return trialEndDate;
+	}
+
+	public void setTrialEndDate(LocalDateTime trialEndDate) {
+		this.trialEndDate = trialEndDate;
+	}
+	
 }

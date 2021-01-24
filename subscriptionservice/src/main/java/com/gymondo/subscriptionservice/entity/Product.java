@@ -1,13 +1,23 @@
 package com.gymondo.subscriptionservice.entity;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product")
@@ -18,6 +28,8 @@ public class Product {
 	private String description;
 	private boolean active;
 	private SubscriptionPlan subscriptionPlan;
+	private Set<Voucher> vouchers;
+	private List<Subscription> subscriptions;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -30,7 +42,7 @@ public class Product {
 		this.id = id;
 	}
 
-	@Column(name = "name", length = 255, nullable = false)
+	@Column(name = "name", length = 100, nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -66,4 +78,26 @@ public class Product {
 		this.subscriptionPlan = subscriptionPlan;
 	}
 
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "product_voucher", joinColumns = {
+			@JoinColumn(name = "product_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "voucher_id") })
+	public Set<Voucher> getVouchers() {
+		return vouchers;
+	}
+
+	public void setVouchers(Set<Voucher> vouchers) {
+		this.vouchers = vouchers;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	public List<Subscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(List<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+	
 }

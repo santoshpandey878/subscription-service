@@ -1,13 +1,20 @@
 package com.gymondo.subscriptionservice.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description="All details about user.")
 public class UserDto {
 
 	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String phone;
-	
+
 	public UserDto() {}
 
 	public Long getId() {
@@ -18,6 +25,8 @@ public class UserDto {
 		this.id = id;
 	}
 
+	@NotBlank(message = "First name cannot be empty")
+	@Size(max = 50, message = "First name cannot be greater than 50 charecters")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -26,6 +35,8 @@ public class UserDto {
 		this.firstName = firstName;
 	}
 
+	@NotBlank(message = "Last name cannot be empty")
+	@Size(max = 50, message = "Last name cannot be greater than 50 charecters")
 	public String getLastName() {
 		return lastName;
 	}
@@ -34,6 +45,9 @@ public class UserDto {
 		this.lastName = lastName;
 	}
 
+	@NotEmpty(message = "Email cannot be empty")
+	@Size(max = 100, message = "Email cannot be greater than 100 charecters")
+	@Email
 	public String getEmail() {
 		return email;
 	}
@@ -42,12 +56,4 @@ public class UserDto {
 		this.email = email;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	
 }

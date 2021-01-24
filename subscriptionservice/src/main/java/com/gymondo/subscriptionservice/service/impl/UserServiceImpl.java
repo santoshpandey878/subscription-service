@@ -14,6 +14,11 @@ import com.gymondo.subscriptionservice.dao.UserRepository;
 import com.gymondo.subscriptionservice.entity.User;
 import com.gymondo.subscriptionservice.service.UserService;
 
+/**
+ * Service class responsible to have all business logic for User
+ * @author santosh
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -43,7 +48,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
+		if(NullUtil.isNull(user)) {
+			throw new ServiceException(message.get(MessageConstant.USER_NOT_EXIST, email));
+		}
+		return user;
 	}
 
 	/**

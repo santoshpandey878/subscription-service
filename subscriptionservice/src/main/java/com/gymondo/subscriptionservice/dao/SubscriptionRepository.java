@@ -2,6 +2,7 @@ package com.gymondo.subscriptionservice.dao;
 
 import java.util.List;
 
+import com.gymondo.subscriptionservice.core.constant.SubscriptionStatus;
 import com.gymondo.subscriptionservice.entity.Subscription;
 
 /**
@@ -15,5 +16,13 @@ public interface SubscriptionRepository extends BaseRepository<Subscription, Lon
 	 * @return
 	 */
 	List<Subscription> findByUser_Email(String email);
+
+	/**
+	 * Method to find subscription by user's email for specific product
+	 * @param email
+	 * @param productId
+	 * @return
+	 */
+	Subscription findByUser_EmailAndProduct_IdAndSubscriptionStatusNot(String email, Long productId, SubscriptionStatus status);
 
 }

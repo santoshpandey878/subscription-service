@@ -19,4 +19,11 @@ public interface ProductService {
 	 */
 	Product getProductById(Long productId);
 
+	/**
+	 * Method to get all products by voucher id
+	 * @param voucherId
+	 * @return
+	 */
+	List<Product> getAllProductsByVoucherId(Long voucherId);
+
 }

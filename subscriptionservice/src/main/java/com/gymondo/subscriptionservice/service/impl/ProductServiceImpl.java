@@ -12,6 +12,11 @@ import com.gymondo.subscriptionservice.dao.ProductRepository;
 import com.gymondo.subscriptionservice.entity.Product;
 import com.gymondo.subscriptionservice.service.ProductService;
 
+/**
+ * Service class responsible to have all business logic for Product
+ * @author santosh
+ *
+ */
 @Service
 public class ProductServiceImpl implements ProductService {
 	
@@ -34,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProductById(Long productId) {
 		return productRepository.findById(productId)
 				.orElseThrow(() -> new ResourceNotFoundException(message.get(MessageConstant.PRODUCT_NOT_FOUND, productId)));
+	}
+
+	@Override
+	public List<Product> getAllProductsByVoucherId(Long voucherId) {
+		return productRepository.findByVouchers_Id(voucherId);
 	}
 
 }

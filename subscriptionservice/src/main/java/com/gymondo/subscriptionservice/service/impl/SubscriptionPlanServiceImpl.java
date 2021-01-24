@@ -7,6 +7,11 @@ import com.gymondo.subscriptionservice.dao.SubscriptionPlanRepository;
 import com.gymondo.subscriptionservice.entity.SubscriptionPlan;
 import com.gymondo.subscriptionservice.service.SubscriptionPlanService;
 
+/**
+ * Service class responsible to have all business logic for Subscription Plan
+ * @author santosh
+ *
+ */
 @Service
 public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 	
