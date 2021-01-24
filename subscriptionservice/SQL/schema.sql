@@ -57,6 +57,11 @@ create table subscription(
 	user_id bigint references users(id)
 );
 
+--Populate database with predefined data for user, product, voucher and subscription plan
+
+INSERT INTO users(first_name, last_name, email, active) VALUES 
+('Santosh', 'Pandey', 'user1@gmail.com', true);
+
 INSERT INTO subscription_plan(price_per_month, subscription_type) VALUES 
 (6, 'MONTHLY'),
 (8, 'MONTHLY');

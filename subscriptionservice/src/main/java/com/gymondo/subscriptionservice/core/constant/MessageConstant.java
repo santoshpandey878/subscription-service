@@ -18,5 +18,6 @@ public class MessageConstant {
 	public static final String VOUCHER_NOT_APPLICABLE = "voucher.not.applicable";
 	public static final String USER_ALREADY_SUBSCRIBED = "user.already.subscribed";
 	public static final String SUBSCRIPTION_NOT_PAUSED_IN_TRIAL = "subscription.not.paused.in.trial";
+	public static final String SUBSCRIPTION_PLAN_NOT_FOUND = "subscription.plan.not.found";
 
 }

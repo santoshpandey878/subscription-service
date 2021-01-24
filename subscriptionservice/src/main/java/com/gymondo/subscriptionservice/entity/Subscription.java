@@ -175,12 +175,14 @@ public class Subscription {
 
 	@Transient
 	public boolean isTrialActive() {
-		if(NullUtil.isNotNull(trialStartDate) 
-				&& NullUtil.isNotNull(trialEndDate) 
-				&& LocalDateTime.now().isBefore(trialEndDate)) {
-			trialActive = true;
-		} else {
-			trialActive = false;
+		if(!trialActive) {
+			if(NullUtil.isNotNull(trialStartDate) 
+					&& NullUtil.isNotNull(trialEndDate) 
+					&& LocalDateTime.now().isBefore(trialEndDate)) {
+				trialActive = true;
+			} else {
+				trialActive = false;
+			}
 		}
 		return trialActive;
 	}
@@ -206,5 +208,5 @@ public class Subscription {
 	public void setTrialEndDate(LocalDateTime trialEndDate) {
 		this.trialEndDate = trialEndDate;
 	}
-	
+
 }

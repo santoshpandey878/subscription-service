@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	 * @param user
 	 */
 	private void validateUser(User user) {
-		if(NullUtil.isNotNull(getUserByEmail(user.getEmail()))) {
+		if(NullUtil.isNotNull(userRepository.findByEmail(user.getEmail()))) {
 			throw new ServiceException(message.get(MessageConstant.USER_ALREADY_EXIST, user.getEmail()));
 		}
 	}
